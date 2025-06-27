@@ -15,10 +15,10 @@ def create_app():
     # Importar blueprints DENTRO da função para evitar circularidade
     with app.app_context():
         from .routes import todo_bp
-        #from .auth import auth_bp
+        from .auth import auth_bp
         
         app.register_blueprint(todo_bp)
-        #app.register_blueprint(auth_bp)
+        app.register_blueprint(auth_bp)
     
     return app
 
