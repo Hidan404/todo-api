@@ -5,6 +5,8 @@ from .config import Config
 # Cria a instância única do SQLAlchemy
 db = SQLAlchemy()
 
+from . import models
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -23,4 +25,3 @@ def create_app():
     return app
 
 # Importar modelos DEPOIS de criar db para evitar dependência circular
-from . import models

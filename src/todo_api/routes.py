@@ -1,6 +1,6 @@
 from flask import Blueprint
 from . import db
-from .models import Tarefa  # Nome correto do modelo
+from .models import Tarefa 
 
 todo_bp = Blueprint('todo', __name__)
 
