@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request, jsonify
 from . import db
 from .models import Tarefa 
 
@@ -11,12 +11,32 @@ def get_todos():
 
 @todo_bp.route('/todos', methods=['POST'])
 def create_todo():
-    from flask import request, jsonify
-    data = request.get_json()
-    if not data or 'titulo' not in data:
-        return jsonify({"error": "Título é obrigatório"}), 400
+    data = request.json
     
-    nova_tarefa = Tarefa(titulo=data['titulo'], descricao=data['descricao'], concluida=False)
+    # Validação aprimorada
+    if not data:
+        return jsonify({"erro": "Dados não fornecidos"}), 400
+    
+    titulo = data.get('titulo')
+    usuario_id = data.get('usuario_id')
+    
+    if not titulo:
+        return jsonify({"erro": "Título é obrigatório"}), 400
+    if not usuario_id:
+        return jsonify({"erro": "ID do usuário é obrigatório"}), 400
+    
+    # Verificar se o usuário existe
+    from .models import Usuario
+    usuario = Usuario.query.get(usuario_id)
+    if not usuario:
+        return jsonify({"erro": "Usuário não encontrado"}), 404
+    
+    nova_tarefa = Tarefa(
+        titulo=titulo,
+        descricao=data.get('descricao', ''),
+        usuario_id=usuario_id
+    )
+    
     db.session.add(nova_tarefa)
     db.session.commit()
     

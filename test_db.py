@@ -8,6 +8,7 @@ with app.app_context():
     # Criar usuário de teste
     db.drop_all()  # Limpar o banco de dados antes de criar as tabelas
     db.create_all()  # Criar as tabelas
+    
     novo_usuario = Usuario(nome="Teste", email="teste@example.com", senha="123456")
     db.session.add(novo_usuario)
     db.session.commit()
