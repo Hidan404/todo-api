@@ -18,6 +18,86 @@ def validar_email(email):
 
 @auth_bp.route('/registrar', methods=['POST'])
 def registrar():
+    """
+    Endpoint para registrar um novo usuário.
+    ---
+    post:
+        summary: Registra um novo usuário
+        description: >
+            Cria um novo usuário na aplicação a partir dos dados fornecidos (nome, email e senha).
+            Realiza validações detalhadas dos campos e retorna mensagens de erro apropriadas.
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            nome:
+                                type: string
+                                example: João Silva
+                                description: Nome completo do usuário
+                            email:
+                                type: string
+                                example: joao@email.com
+                                description: Email do usuário
+                            senha:
+                                type: string
+                                example: senha1234
+                                description: Senha do usuário (mínimo 8 caracteres)
+                        required:
+                            - nome
+                            - email
+                            - senha
+        responses:
+            201:
+                description: Usuário registrado com sucesso
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                mensagem:
+                                    type: string
+                                    example: Usuário registrado com sucesso
+                                usuario_id:
+                                    type: integer
+                                    example: 1
+            400:
+                description: Dados inválidos ou não fornecidos
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                mensagem:
+                                    type: string
+                                    example: Dados inválidos
+                                erros:
+                                    type: object
+                                    example: {"email": "Email inválido"}
+            409:
+                description: Email já registrado
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                mensagem:
+                                    type: string
+                                    example: Email já registrado
+            500:
+                description: Erro interno ao registrar usuário
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                mensagem:
+                                    type: string
+                                    example: Erro ao registrar usuário
+    """
+    '''Endpoint para registrar um novo usuário'''
     data = request.json
     
     # Verifica se os dados foram fornecidos
@@ -71,6 +151,67 @@ def registrar():
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
+    """
+    Autentica um usuário e retorna um token de acesso JWT.
+    ---
+    post:
+        summary: Autenticação de usuário
+        description: Realiza o login de um usuário com email e senha, retornando um token JWT para autenticação nas próximas requisições.
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            email:
+                                type: string
+                                example: usuario@email.com
+                            senha:
+                                type: string
+                                example: senha123
+        responses:
+            200:
+                description: Login bem-sucedido
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                mensagem:
+                                    type: string
+                                    example: Login bem-sucedido
+                                usuario_id:
+                                    type: integer
+                                    example: 1
+                                nome:
+                                    type: string
+                                    example: João Silva
+                                token:
+                                    type: string
+                                    example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+            400:
+                description: Dados não fornecidos ou inválidos
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                mensagem:
+                                    type: string
+                                    example: Email e senha são obrigatórios
+            401:
+                description: Credenciais inválidas
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                mensagem:
+                                    type: string
+                                    example: Credenciais inválidas
+    """
+    
     data = request.json
     
     # Verifica se os dados foram fornecidos

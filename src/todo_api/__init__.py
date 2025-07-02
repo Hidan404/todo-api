@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from datetime import timedelta
 from .config import Config
 from .errors import APIError
+from flasgger import Swagger
 
 # Cria a instância única do SQLAlchemy
 db = SQLAlchemy()
@@ -18,13 +19,30 @@ def create_app():
     app.config['JWT_TOKEN_LOCATION'] = ['headers']  # localizção do token esta no cabeçalho
     app.config['JWT_HEADER_NAME'] = 'Authorization'
     app.config['JWT_HEADER_TYPE'] = 'Bearer'
-    
+    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)  # Expira em 7 dias
+
     # Configurações recomendadas
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)  # Expira em 1 hora
     app.config['PROPAGATE_EXCEPTIONS'] = True  # Crucial para tratamento de erros
     
+  
     # Inicialize o JWTManager
     jwt = JWTManager(app)
+
+
+    app.config['SWAGGER'] = {
+        'title': 'API de Tarefas',
+        'uiversion': 3,
+        'specs_route': '/docs/',
+        'securityDefinitions': {
+            'Bearer': {
+                'type': 'apiKey',
+                'name': 'Authorization',
+                'in': 'header'
+            }
+        }
+    }
+    Swagger(app)
 
     # Registro de manipuladores de erro
     @app.errorhandler(APIError)
