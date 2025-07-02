@@ -14,8 +14,8 @@ def create_app():
     
     # Inicializa a extensão
     db.init_app(app)
-    app.config['JWT_SECRET_KEY'] = 'sua-chave-secreta-super-forte'  # Troque por uma chave segura!
-    app.config['JWT_TOKEN_LOCATION'] = ['headers']  # Indica que o token está no cabeçalho
+    app.config['JWT_SECRET_KEY'] = 'sua-chave-secreta-super-forte'  # Troque por uma chave lembrar
+    app.config['JWT_TOKEN_LOCATION'] = ['headers']  # localizção do token esta no cabeçalho
     app.config['JWT_HEADER_NAME'] = 'Authorization'
     app.config['JWT_HEADER_TYPE'] = 'Bearer'
     
