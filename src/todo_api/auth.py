@@ -5,10 +5,11 @@ from . import db
 from .models import Usuario
 from src.todo_api.errors import APIError  # Importe a exceção personalizada
 import re  # Para validação de email
+from flask_jwt_extended import create_access_token
 
 auth_bp = Blueprint('auth', __name__)
 
-# Expressão regular para validação básica de email
+# Expressão regular para validar emails basicamente
 EMAIL_REGEX = re.compile(r'^[\w\.-]+@[\w\.-]+\.\w+$')
 
 def validar_email(email):
@@ -92,12 +93,15 @@ def login():
     
     if not usuario.verificar_senha(senha):
         raise APIError("Credenciais inválidas", 401)
-    
+
+    token_acesso = create_access_token(identity=str(usuario.id))
+
     # Login bem sucedido
     return jsonify({
         "mensagem": "Login bem-sucedido",
         "usuario_id": usuario.id,
-        "nome": usuario.nome
+        "nome": usuario.nome,
+        "token": token_acesso
     }), 200
 
 
