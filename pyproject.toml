@@ -6,16 +6,17 @@ authors = [
     {name = "Ronald Antonio Oliveira de sousa",email = "ronaldkurouzo@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.9,<4.0"
 dependencies = [
     "flask (>=3.1.1,<4.0.0)",
     "flask-sqlalchemy (>=3.1.1,<4.0.0)",
-    "pyjwt (>=2.10.1,<3.0.0)"
+    "flask-jwt-extended (>=4.7.1,<5.0.0)",
+    "pyjwt (>=2.10.1,<3.0.0)",
+    "flasgger (>=0.9.7.1,<0.10.0.0)"
 ]
 
 [tool.poetry]
 packages = [{include = "todo_api", from = "src"}]
-
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
