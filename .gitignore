@@ -1,6 +1,0 @@
-# .gitignore
-todos.db
-instance/
-__pycache__/
-*.pyc
-.venv/
